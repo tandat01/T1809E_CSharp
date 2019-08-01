@@ -1,24 +1,26 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace T1809E_CSharp
 {
-    public class Product
+    public delegate void Showdeget(string s);
+    public  class Product
     {
         public int id;
         public string name;
-        public float price;
+        public decimal price;
         public int qty;
         public string image;
         public string desc;
-        public List<string> gallery=new List<string>();
+        public List<string> gallery;
 
         public Product()
         {
+            this.gallery = new List<string>();
         }
 
-        public Product(int id, string name, float price, int qty, string image, string desc)
+        public Product(int id, string name, decimal price, int qty, 
+            string image, string desc)
         {
             this.id = id;
             this.name = name;
@@ -26,59 +28,144 @@ namespace T1809E_CSharp
             this.qty = qty;
             this.image = image;
             this.desc = desc;
+            this.gallery = new List<string>();
+        }
+
+        public string this[int index]
+        {
+            get
+            {
+                return "aaaa"+gallery[index];
+            }
+            set
+            {
+                if (value.Length > 10)
+                {
+                    gallery[index] = value;
+                }
+            }
+        }
             
+        public int Id
+        {
+            get => id;
+            set => id = value;
         }
 
-        public void getInfo()
+        public string Name
         {
-            Console.WriteLine("Id: "+id);
-            Console.WriteLine("Name: "+name);
-            Console.WriteLine("Price: "+price);
-            Console.WriteLine("Qty: "+qty);
-            Console.WriteLine("Image: "+image);
-            Console.WriteLine("Desc: "+desc);
-            Console.WriteLine("Gallery: ");
-            foreach (var d in gallery)
-            {
-                Console.WriteLine(d);
-            }
-            Console.WriteLine();
+            get => name;
+            set => name = value;
+        }
+
+        public decimal Price
+        {
+            get => price;
+            set => price = value;
+        }
+
+        public int Qty
+        {
+            get => qty;
+            set => qty = value;
+        }
+
+        public string Image
+        {
+            get => image;
+            set => image = value;
+        }
+
+        public string Desc
+        {
+            get => desc;
+            set => desc = value;
+        }
+
+        public virtual void TinhTien()
+        {
+            Product p = new Product();
+            p.gallery.Add("helloworld");
+            p.gallery.Add("goodmorning");
             
+            Console.WriteLine(p.gallery[0]);
+            Console.WriteLine(p[0]);
+            p.gallery[1] = "hahaha";
+            p[1] = "abcxyz";
         }
 
-        public void Thongbao()
+        public virtual void GetInfo()
         {
-            if (qty>0)
+            
+            Console.WriteLine("id: "+id);
+            Console.WriteLine("name: "+name);
+            Console.WriteLine("price: "+price);
+            Console.WriteLine("qty: "+qty);
+            Console.WriteLine("image: "+ this.Image);
+            Console.WriteLine("desc: "+desc);
+            this.Image = "abcxyz";
+            foreach (string s in gallery)
             {
-                Console.WriteLine("Con hang voi so luong la: " + qty);
-            }
-            else
-            {
-                Console.WriteLine("Hang da het: "+qty);
+                Console.WriteLine(s);
             }
         }
 
-        public void Them()
+        public bool CheckQty()
         {
-            string n;
-            Console.WriteLine("Nhap anh ");
-            n = Console.ReadLine();
-            gallery.Add(n);
-            Console.WriteLine();
-            if (gallery.Count>10)
+            if (qty > 0)
             {
-                Console.WriteLine("Khong duoc them nua vui long xoa anh ");
+                return true;
             }
-
+            return false;
         }
 
-        public void Xoa()
+        public bool AddGallery(string img)
         {
-            string i;
-            Console.WriteLine("Nhap anh muon xoa");
-            i = Console.ReadLine();
-            gallery.Remove(i);
-            Console.WriteLine();
+            if (gallery.Count < 10)
+            {
+                gallery.Add(img);
+                return true;
+            }
+            Console.WriteLine("Vuot qua so anh cho phep");
+            return false;
         }
+
+        public void AddGallery2()
+        {
+            if (gallery.Count < 10)
+            {
+                string img = Console.ReadLine();
+                gallery.Add(img);
+                return;
+            }
+            Console.WriteLine("Vuot qua so anh cho phep");
+        }
+
+        public void RemoveGallery()
+        {
+            int i = 0;
+            foreach (string s in gallery)
+            {
+                Console.WriteLine(i+". "+ s);
+                i++;
+            }
+            Console.WriteLine("Nhap vi tri anh muon xoa:");
+            int n = Convert.ToInt16(Console.ReadLine());
+            gallery.RemoveAt(n);
+        }
+
+        public bool RemoveGallery(int n)
+        {
+            if (n < gallery.Count)
+            {
+                gallery.RemoveAt(n);
+                //gallery.Remove("afafaafa");
+                return true;
+            }
+            Console.WriteLine("Khong tim thay anh hoac khong the xoa");
+            return false;
+        }
+        
     }
+
 }
